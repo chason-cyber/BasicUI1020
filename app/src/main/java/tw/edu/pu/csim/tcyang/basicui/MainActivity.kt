@@ -1,6 +1,5 @@
 package tw.edu.pu.csim.tcyang.basicui
 
-
 import android.app.Activity
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -11,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable // 導入 clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -81,178 +81,202 @@ fun Main(modifier: Modifier = Modifier) {
 
     var flag by remember { mutableStateOf("test") }
 
-
-    LocalContext.current
-
-
-
     val context = LocalContext.current
 
     var mper: MediaPlayer? by remember { mutableStateOf(null) }
 
+
     DisposableEffect(Unit) {
         onDispose {
-
             mper?.release()
             mper = null
         }
     }
 
 
+    var currentImageResId by remember { mutableStateOf(R.drawable.android) }
 
-
+    val image1 = R.drawable.animal2
+    val image2 = R.drawable.animal4
 
     Column (
         modifier = modifier
-            .fillMaxSize() // 1. 設定全螢幕（填滿父容器）
-            .background(Color(0xFFE0BBE4)), // 4. 設定背景為淺紫色
-        horizontalAlignment = Alignment.CenterHorizontally, // 2. 設定水平置中
-        verticalArrangement = Arrangement.Top // 3. 設定垂直靠上
+            .fillMaxSize()
+            .background(Color(0xFFE0BBE4)),
+        horizontalAlignment = Alignment.CenterHorizontally,
+
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = stringResource(R.string.app_title),
-            fontSize = 25.sp,
-            color = Color.Blue,
-            fontFamily = FontFamily(Font(R.font.kai))
 
-        )
-
-        Spacer(modifier = Modifier.size(10.dp))
-
-        Text(text = stringResource(R.string.app_author),
-            fontSize = 20.sp,
-            color = Color(0xFF654321)
-        )
-
-        Spacer(modifier = Modifier.size(10.dp))
-
-        Row {
-            Image(
-                painter = painterResource(id = R.drawable.android),
-                contentDescription = "Android 圖示",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-                    .background(Color.Yellow),
-                alpha = 0.6f,
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = stringResource(R.string.app_title),
+                fontSize = 25.sp,
+                color = Color.Blue,
+                fontFamily = FontFamily(Font(R.font.kai))
             )
 
-            Image(
-                painter = painterResource(id = R.drawable.compose),
-                contentDescription = "Compose icon",
-                modifier = Modifier.size(100.dp)
+            Spacer(modifier = Modifier.size(10.dp))
+
+            Text(text = stringResource(R.string.app_author),
+                fontSize = 20.sp,
+                color = Color(0xFF654321)
             )
 
-            Image(
-                painter = painterResource(id = R.drawable.firebase),
-                contentDescription = "Firebase icon",
-                modifier = Modifier.size(100.dp)
-            )
+            Spacer(modifier = Modifier.size(10.dp))
 
-        }
-
-
-
-
-        Spacer(modifier = Modifier.size(10.dp))
-
-        LazyRow {
-            items(51) { index ->
-                Text(text = "$index:")
-                Text(text = AnimalsName[index % 10])
-
+            Row {
                 Image(
-                    painter = painterResource(id = Animals[index % 10]),
-                    contentDescription = "可愛動物",
-                    modifier = Modifier.size(60.dp)
+                    painter = painterResource(id = R.drawable.android),
+                    contentDescription = "Android 圖示",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .clip(CircleShape)
+                        .background(Color.Yellow),
+                    alpha = 0.6f,
                 )
 
-            }
-        }
-
-        Spacer(modifier = Modifier.size(10.dp))
-
-        Button(
-            onClick = {
-                if (flag == "test"){
-                    flag = "abc"
-                }
-                else{
-                    flag = "test"
-                }
-
-                Toast.makeText(
-                    context,
-                    "Compose 按鈕被點擊了！",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-            }
-
-        ) {
-            Text("按鈕測試")
-        }
-
-        Text(text = flag)
-
-        Spacer(modifier = Modifier.size(10.dp))
-        Row{
-            Button(onClick = {
-                mper?.release()
-                mper = null
-                mper = MediaPlayer.create(context, R.raw.tcyang)
-                mper?.start()
-            },
-                modifier = Modifier.fillMaxWidth(0.33f).fillMaxHeight(0.8f),
-                colors = buttonColors(Color.Green)
-            ) {
-                Text(text = "歡迎", color = Color.Blue)
-                Text(text = "修課", color = Color.Red)
                 Image(
-                    painterResource(id = R.drawable.teacher),
-                    contentDescription ="teacher icon")
+                    painter = painterResource(id = R.drawable.compose),
+                    contentDescription = "Compose icon",
+                    modifier = Modifier.size(100.dp)
+                )
 
+                Image(
+                    painter = painterResource(id = R.drawable.firebase),
+                    contentDescription = "Firebase icon",
+                    modifier = Modifier.size(100.dp)
+                )
             }
 
             Spacer(modifier = Modifier.size(10.dp))
 
-            Button(onClick = {
-                mper?.release()  //釋放資源
-                mper = null // 清除舊引用
-                mper = MediaPlayer.create(context, R.raw.fly) //設定音樂
-                mper?.start()  },  //開始播放
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .fillMaxHeight(0.4f),
-                colors = buttonColors(Color.Blue)
+            LazyRow {
+                items(51) { index ->
+                    Text(text = "$index:")
+                    Text(text = AnimalsName[index % 10])
 
-            ) {
-                Text(text = "展翅飛翔", color = Color.White)
-                Image(
-                    painterResource(id = R.drawable.fly),
-                    contentDescription ="fly icon")
-
+                    Image(
+                        painter = painterResource(id = Animals[index % 10]),
+                        contentDescription = "可愛動物",
+                        modifier = Modifier.size(60.dp)
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.size(10.dp))
+
 
             Button(
                 onClick = {
-
-                    val activity = context as? Activity
-                    activity?.finish()
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BFFF)),
-                shape = CutCornerShape(10),
-                border = BorderStroke(1.dp, Color.Blue),
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 10.dp)
+                    if (flag == "test"){
+                        flag = "abc"
+                    }
+                    else{
+                        flag = "test"
+                    }
+                    Toast.makeText(
+                        context,
+                        "Compose 按鈕被點擊了！",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             ) {
-                Text(text = "結束App")
+                Text("按鈕測試")
             }
+
+            Text(text = flag)
+
+            Spacer(modifier = Modifier.size(10.dp))
+
+
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+
+                Button(onClick = {
+                    mper?.release()
+                    mper = null
+                    mper = MediaPlayer.create(context, R.raw.tcyang)
+                    mper?.start()
+                },
+                    modifier = Modifier.weight(1f).fillMaxHeight(0.8f),
+                    colors = buttonColors(Color.Green)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "歡迎", color = Color.Blue)
+                        Text(text = "修課", color = Color.Red)
+                        Image(
+                            painterResource(id = R.drawable.teacher),
+                            contentDescription ="teacher icon",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.size(10.dp))
+
+
+                Button(onClick = {
+                    mper?.release()
+                    mper = null
+                    mper = MediaPlayer.create(context, R.raw.fly)
+                    mper?.start()
+                },
+                    modifier = Modifier.weight(0.5f).fillMaxHeight(0.4f),
+                    colors = buttonColors(Color.Blue)
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(text = "展翅飛翔", color = Color.White)
+                        Image(
+                            painterResource(id = R.drawable.fly),
+                            contentDescription ="fly icon",
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.size(10.dp))
+
+
+                Button(
+                    onClick = {
+                        val activity = context as? Activity
+                        activity?.finish()
+                    },
+                    modifier = Modifier.weight(1f),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BFFF)),
+                    shape = CutCornerShape(10),
+                    border = BorderStroke(1.dp, Color.Blue),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 10.dp)
+                ) {
+                    Text(text = "結束App")
+                }
+            }
+
+
         }
 
 
 
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
 
+        ) {
+            Spacer(modifier = Modifier.size(10.dp))
+
+            Image(
+                painter = painterResource(id = currentImageResId),
+                contentDescription = "可切換的圖片",
+                modifier = Modifier
+                    .size(40.dp)
+                    .clickable {
+                        currentImageResId = if (currentImageResId == image1) image2 else image1
+                        Toast.makeText(context, "圖片已切換！", Toast.LENGTH_SHORT).show()
+                    }
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+        }
 
 
     }
