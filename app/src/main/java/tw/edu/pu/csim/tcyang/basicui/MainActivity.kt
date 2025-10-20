@@ -4,6 +4,7 @@ package tw.edu.pu.csim.tcyang.basicui
 import android.app.Activity
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -77,6 +78,11 @@ fun Main(modifier: Modifier = Modifier) {
     var AnimalsName = arrayListOf("鴨子","企鵝",
         "青蛙","貓頭鷹","海豚", "牛", "無尾熊", "獅子", "狐狸", "小雞")
 
+    var flag by remember { mutableStateOf("test") }
+
+    // 取得當前的 Context
+    LocalContext.current
+
 
     // 取得當前的 Context
     val context = LocalContext.current
@@ -135,6 +141,9 @@ fun Main(modifier: Modifier = Modifier) {
 
         }
 
+
+
+
         Spacer(modifier = Modifier.size(10.dp))
 
         LazyRow {
@@ -150,6 +159,31 @@ fun Main(modifier: Modifier = Modifier) {
 
             }
         }
+
+        Spacer(modifier = Modifier.size(10.dp))
+
+        Button(
+            onClick = {
+                if (flag == "test"){
+                    flag = "abc"
+                }
+                else{
+                    flag = "test"
+                }
+
+                Toast.makeText(
+                    context,
+                    "Compose 按鈕被點擊了！",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+            }
+
+        ) {
+            Text("按鈕測試")
+        }
+
+        Text(text = flag)
 
         Spacer(modifier = Modifier.size(10.dp))
         Row{
