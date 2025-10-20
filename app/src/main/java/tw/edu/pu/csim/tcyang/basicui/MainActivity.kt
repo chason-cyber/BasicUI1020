@@ -87,7 +87,7 @@ fun Main(modifier: Modifier = Modifier) {
     // 取得當前的 Context
     val context = LocalContext.current
 
-    var mper: MediaPlayer? by remember { mutableStateOf(null) }
+
 
 
 
@@ -188,41 +188,18 @@ fun Main(modifier: Modifier = Modifier) {
         Spacer(modifier = Modifier.size(10.dp))
         Row{
             Button(onClick = {
-                mper?.release()
-                mper = null
-                mper = MediaPlayer.create(context, R.raw.tcyang)
-                mper?.start()
-            },
-                modifier = Modifier.fillMaxWidth(0.33f).fillMaxHeight(0.8f),
-                colors = buttonColors(Color.Green)
-            ) {
-                Text(text = "歡迎", color = Color.Blue)
-                Text(text = "修課", color = Color.Red)
-                Image(
-                    painterResource(id = R.drawable.teacher),
-                    contentDescription ="teacher icon")
-
+            }) {
+                Text(text = "歡迎修課")
             }
+
 
             Spacer(modifier = Modifier.size(10.dp))
 
             Button(onClick = {
-                mper?.release()  //釋放資源
-                mper = null // 清除舊引用
-                mper = MediaPlayer.create(context, R.raw.fly) //設定音樂
-                mper?.start()  },  //開始播放
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .fillMaxHeight(0.4f),
-                colors = buttonColors(Color.Blue)
-
-            ) {
-                Text(text = "展翅飛翔", color = Color.White)
-                Image(
-                    painterResource(id = R.drawable.fly),
-                    contentDescription ="fly icon")
-
+            }) {
+                Text(text = "展翅飛翔")
             }
+
 
             Spacer(modifier = Modifier.size(10.dp))
 
